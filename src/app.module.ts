@@ -9,30 +9,24 @@ import { OffersModule } from './offers/offers.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
+import { kupipodaridayDBFactory } from './config/database-config.factory';
 
 @Module({
   imports: [
-      //даем доступ к env файлам
+    //даем доступ к env файлам
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'student',
-      password: 'student',
-      database: 'nest_project',
-      entities: [],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      useClass: kupipodaridayDBFactory,
     }),
     UsersModule,
     WishesModule,
     WishlistsModule,
     OffersModule,
   ],
-    controllers: [AppController],
-    providers: [AppService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

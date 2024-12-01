@@ -1,27 +1,33 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {IsString} from "class-validator";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { IsString } from 'class-validator';
 
 @Entity()
 export class Wishlist {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @Column()
-    @IsString()
-    name: string;
+  @Column()
+  @IsString()
+  name: string;
 
-    @Column()
-    description: string; //описание коллекции подарков
+  @Column()
+  description: string; //описание коллекции подарков
 
-    @Column()
-    image: string;
+  @Column()
+  image: string;
 
-    @Column()
-    items: string;
+  @Column()
+  items: string;
 }

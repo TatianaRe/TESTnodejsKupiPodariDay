@@ -1,27 +1,33 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {IsString} from "class-validator";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { IsString } from 'class-validator';
 
 @Entity()
 export class Offer {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @Column()
-    @IsString()
-    user: string; //id желающего скинуться
+  @Column()
+  @IsString()
+  user: string; //id желающего скинуться
 
-    @Column()
-    item: string; //описание коллекции подарков
+  @Column()
+  item: string; //описание коллекции подарков
 
-    @Column()
-    amount: string;
+  @Column()
+  amount: string;
 
-    @Column()
-    hidden: boolean; //флаг инфа о скидывающемся
+  @Column()
+  hidden: boolean; //флаг инфа о скидывающемся
 }

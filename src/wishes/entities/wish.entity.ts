@@ -1,43 +1,54 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {IsString} from "class-validator";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Wish {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @IsDate()
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @IsDate()
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @Column()
+  @IsString()
+  name: string;
 
-    @Column()
-    @IsString()
-    name: string;
+  @Column()
+  link: string;
 
-    @Column()
-    link: string;
+  @Column()
+  image: string;
 
-    @Column()
-    image: string;
+  @Column()
+  price: string;
 
-    @Column()
-    price: string;
+  @Column()
+  raised: string;
 
-    @Column()
-    raised: string;
+  @IsNotEmpty()
+  @ManyToOne(() => User, (user) => user.wishes)
+  owner: User;
 
-    @Column()
-    owner: string;
+  @Column()
+  description: string;
 
-    @Column()
-    description: string;
+  @Column()
+  offers: string;
 
-    @Column()
-    offers: string;
-
-    @Column()
-    copied: string;
+  @Column()
+  copied: string;
 }
