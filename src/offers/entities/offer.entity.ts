@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsString } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
+import { IsInt } from 'class-validator';
+import { Wish } from '../../wishes/entities/wish.entity';
 
 @Entity()
 export class Offer {
@@ -18,14 +21,14 @@ export class Offer {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
-  @IsString()
-  user: string; //id желающего скинуться
+  @ManyToOne(() => User, (user) => user.offer)
+  user: User; //id желающего скинуться
+
+  @ManyToOne(() => Wish, (user) => user.offers)
+  item: Wish; //содержит ссылку на товар
 
   @Column()
-  item: string; //описание коллекции подарков
-
-  @Column()
+  @IsInt()
   amount: string;
 
   @Column()

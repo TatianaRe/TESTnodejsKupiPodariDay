@@ -5,27 +5,31 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Wish } from './entities/wish.entity';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class WishesService {
   constructor(
-    @InjectRepository(Wish) private readonly wishRepository: Repository<Wish>,
+    @InjectRepository(Wish) private wishesRepository: Repository<Wish>,
     private readonly usersService: UsersService,
   ) {}
 
   async create(createWishDto: CreateWishDto, userId: number) {
     const owner = await this.usersService.findById(userId);
-    const wish = await this.wishRepository.create({ ...createWishDto, owner });
+    const wish = await this.wishesRepository.create({
+      ...createWishDto,
+      owner,
+    });
 
-    return this.wishRepository.save(wish);
+    return this.wishesRepository.save(wish);
   }
 
-  async findAll(query: {
+  /*async findAll(query: {
     page: number;
     limit: number;
   }): Promise<IWishPaginator> {
     const skip = (query.page - 1) * query.limit;
-    const [data, totalCount] = await this.wishRepository.findAndCount({
+    const [data, totalCount] = await this.wishesRepository.findAndCount({
       take: query.limit,
       skip,
     });
@@ -38,9 +42,9 @@ export class WishesService {
       totalPage,
     };
   }
-
+*/
   async findWishById(ownerId: number) {
-    return await this.wishRepository.find({
+    return await this.wishesRepository.find({
       where: { owner: { id: ownerId } },
       relations: ['owner'],
     });

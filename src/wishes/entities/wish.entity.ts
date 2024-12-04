@@ -2,53 +2,75 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsUrl,
+  Length,
+  IsNumber,
+  IsInt,
+} from 'class-validator';
 import { User } from '../../users/entities/user.entity';
+import { Offer } from '../../offers/entities/offer.entity';
 
 @Entity()
 export class Wish {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsDate()
   @CreateDateColumn()
   createdAt: Date;
 
-  @IsDate()
   @UpdateDateColumn()
   updatedAt: Date;
 
   @Column()
   @IsString()
+  @Length(1, 250)
   name: string;
 
   @Column()
+  @IsUrl()
+  @IsOptional()
   link: string;
 
   @Column()
+  @IsUrl()
+  @IsOptional()
   image: string;
 
+  //стоимость подарка, с округлением??? до сотых, число
   @Column()
-  price: string;
+  @IsNumber()
+  @IsOptional()
+  price: number;
 
+  //сумма
   @Column()
+  @IsNumber()
+  @IsOptional()
   raised: string;
 
-  @IsNotEmpty()
   @ManyToOne(() => User, (user) => user.wishes)
   owner: User;
 
+  //строка с описанием подарка
   @Column()
+  @IsString()
+  @Length(1, 1024)
   description: string;
 
-  @Column()
-  offers: string;
+  //массив ссылок на заявки скинуться от других пользователей
+  @OneToMany(() => Offer, (offer) => offer.item)
+  offers: Offer;
 
+  //счетчик тех, кто скопировал подарок себе. Целое
   @Column()
+  @IsInt()
   copied: string;
 }

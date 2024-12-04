@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -13,44 +14,56 @@ import {
   Length,
   MinLength,
 } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { Wish } from '../../wishes/entities/wish.entity';
+import { Offer } from '../../offers/entities/offer.entity';
 
 export class CreateUserDto {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Length(2.3)
-  @IsNotEmpty()
+  @Column()
+  @IsString()
+  @Length(2, 30)
   username: string;
 
-  @Length(2.2)
+  @Column({ default: 'Пока ничего не рассказал о себе' })
+  @Length(2, 200)
   @IsOptional()
   about: string;
 
-  @IsUrl
+  @Column({ default: 'https://i.pravatar.cc/300' })
+  @IsUrl()
   @IsOptional()
   avatar: string;
 
-  @IsNotEmpty() //проверка на то, что поле не пустое
+  @Column({
+    unique: true,
+  })
   @IsEmail()
+  @IsNotEmpty() //проверка на то, что поле не пустое
   email: string;
 
-  @MinLength(6)
+  @Exclude()
+  @Column({ select: false })
   @IsNotEmpty()
+  @MinLength(6)
   password: string;
 
-  @Column()
-  wishes: string;
+  @IsNotEmpty()
+  @OneToMany(() => Wish, (wish) => wish.owner)
+  wishes: Wish[];
+
+  @IsNotEmpty()
+  @OneToMany(() => Offer, (offer) => offer.user)
+  offer: Offer[];
 
   @Column()
-  offers: string;
-
-  @Column()
-  wishlists: string[];
+  wishlists: string;
 }

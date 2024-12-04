@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  //TypeOrmModule,
-  TypeOrmModuleOptions,
-  TypeOrmOptionsFactory,
-} from '@nestjs/typeorm';
+import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 
@@ -20,6 +16,7 @@ export class kupipodaridayDBFactory implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('database.name'),
       entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
       //migrations:true,
+      logging: true,
       synchronize: true,
     };
   }

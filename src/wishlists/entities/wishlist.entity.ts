@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsString } from 'class-validator';
+import { IsOptional, IsUrl, Length, MaxLength } from 'class-validator';
+import { Wish } from '../../wishes/entities/wish.entity';
 
 @Entity()
 export class Wishlist {
@@ -19,15 +21,19 @@ export class Wishlist {
   updatedAt: Date;
 
   @Column()
-  @IsString()
+  @Length(1, 250)
+  @IsOptional()
   name: string;
 
   @Column()
+  @MaxLength(1500)
+  @IsOptional()
   description: string; //описание коллекции подарков
 
-  @Column()
+  @IsUrl()
+  @IsOptional()
   image: string;
 
-  @Column()
-  items: string;
+  @JoinTable()
+  items: Wish[];
 }
